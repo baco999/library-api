@@ -5,11 +5,14 @@ import com.apirestlibrary.libraryapi.model.repository.BookRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,6 +64,53 @@ public class BookRepositoryTest {
         //verificação
         //validação
         assertThat(exist).isFalse();
+
+
+    }
+
+    @Test
+    @DisplayName("Deve obter um livro pelo Id")
+    public void findByIdTest(){
+        //cenario
+        Book book = Book.builder().isbn("123").build();
+        testEntityManager.persist(book);
+
+        //execução
+        Optional<Book> findById = repository.findById(book.getId());
+
+        //Verificação
+        assertThat(findById.isPresent()).isTrue();
+
+    }
+
+    @Test
+    @DisplayName("Deve salvar um livro na base")
+    public void saveBook(){
+
+        Book book = getNewBook();
+
+        Book saveBook = repository.save(book);
+
+        assertThat(saveBook.getId()).isNotNull();
+
+
+    }
+
+    @Test
+    @DisplayName("Deve deletar um livro")
+    public void deletedBook(){
+
+        //cenario
+        Book book = getNewBook();
+        testEntityManager.persist(book);
+
+        Book foundedBook = testEntityManager.find(Book.class, book.getId());
+
+        repository.delete(foundedBook);
+
+        Book deletedBook = testEntityManager.find(Book.class, book.getId());
+
+        assertThat(deletedBook).isNull();
 
 
     }
