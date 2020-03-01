@@ -115,7 +115,7 @@ public class BookRepositoryTest {
 
     }
 
-    private Book getNewBook() {
+    public static Book getNewBook() {
         return Book.builder().author("teste").title("teste").isbn("123").build();
     }
 }

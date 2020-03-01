@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/books")
-public class BooksController {
+public class BookController {
 
     @Autowired
     private BookService bookService;
@@ -85,19 +85,7 @@ public class BooksController {
 
 
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrors handleValidationException(MethodArgumentNotValidException e){
 
-        BindingResult bindingResult = e.getBindingResult();
-        return new ApiErrors(bindingResult);
-    }
 
-    @ExceptionHandler(BusinessException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrors handleValidationException(BusinessException e){
-
-        return new ApiErrors(e);
-    }
 
 }
