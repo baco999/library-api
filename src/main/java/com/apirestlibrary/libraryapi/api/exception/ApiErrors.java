@@ -1,4 +1,4 @@
-package com.apirestlibrary.libraryapi.api.resource;
+package com.apirestlibrary.libraryapi.api.exception;
 
 import com.apirestlibrary.libraryapi.api.exception.BusinessException;
 import org.springframework.validation.BindingResult;

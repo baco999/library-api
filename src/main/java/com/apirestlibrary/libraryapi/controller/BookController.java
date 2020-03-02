@@ -2,37 +2,31 @@ package com.apirestlibrary.libraryapi.controller;
 
 import com.apirestlibrary.libraryapi.api.dto.BookDTO;
 import com.apirestlibrary.libraryapi.api.dto.LoanDTO;
-import com.apirestlibrary.libraryapi.api.resource.ApiErrors;
-import com.apirestlibrary.libraryapi.api.exception.BusinessException;
 import com.apirestlibrary.libraryapi.model.entity.Book;
 import com.apirestlibrary.libraryapi.model.entity.Loan;
 import com.apirestlibrary.libraryapi.service.BookService;
 import com.apirestlibrary.libraryapi.service.LoanService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
 public class BookController {
 
-    private BookService bookService;
-    private ModelMapper mapper;
-    private LoanService loanService;
+    private final BookService bookService;
+    private final ModelMapper mapper;
+    private final LoanService loanService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

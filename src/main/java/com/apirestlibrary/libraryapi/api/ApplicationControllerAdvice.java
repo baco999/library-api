@@ -1,7 +1,7 @@
 package com.apirestlibrary.libraryapi.api;
 
 import com.apirestlibrary.libraryapi.api.exception.BusinessException;
-import com.apirestlibrary.libraryapi.api.resource.ApiErrors;
+import com.apirestlibrary.libraryapi.api.exception.ApiErrors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
