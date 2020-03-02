@@ -27,6 +27,9 @@ public class Loan {
     private String customer;
 
     @Column
+    private String emailCustomer;
+
+    @Column
     private LocalDate loanDate;
 
     @Column

@@ -21,4 +21,6 @@ public class LoanDTO {
     private String customer;
 
     private BookDTO bookDTO;
+
+    private String emailCustomer;
 }

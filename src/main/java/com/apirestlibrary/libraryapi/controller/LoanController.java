@@ -27,57 +27,51 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LoanController {
 
-    private final LoanService loanService;
+    private final LoanService service;
     private final BookService bookService;
-    private final ModelMapper mapper;
+    private final ModelMapper modelMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Long createdLoan(@RequestBody LoanDTO loanDTO){
-
-        Book book = bookService.getBookByIsbn(loanDTO.getIsbn())
-                .orElseThrow(()->
-                        new ResponseStatusException( HttpStatus.BAD_REQUEST, "Livro não encontrado com esse isbn fornecido"));
-
+    public Long create(@RequestBody LoanDTO dto) {
+        Book book = bookService
+                .getBookByIsbn(dto.getIsbn())
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book not found for passed isbn"));
         Loan entity = Loan.builder()
                 .book(book)
-                .customer(loanDTO.getCustomer())
+                .customer(dto.getCustomer())
                 .loanDate(LocalDate.now())
                 .build();
 
-        entity = loanService.save(entity);
-
+        entity = service.save(entity);
         return entity.getId();
     }
 
-    @PutMapping("{id}")
-    public void returnedLoan(@PathVariable Long id, @RequestBody ReturnedLoanDTO returnedLoanDTO){
-
-        Loan loan = loanService.getById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro nao encontrado"));
-        loan.setReturned(returnedLoanDTO.getReturned());
-
-        loanService.update(loan);
-
+    @PatchMapping("{id}")
+    public void returnBook(
+            @PathVariable Long id,
+            @RequestBody ReturnedLoanDTO dto) {
+        Loan loan = service.getById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        loan.setReturned(dto.getReturned());
+        service.update(loan);
     }
 
     @GetMapping
-    public Page<LoanDTO> find(LoanFilterDTO returnedLoanDTO, Pageable pageable){
-
-        Page<Loan> response = loanService.find(returnedLoanDTO, pageable);
-
-        List<LoanDTO> listResponse = response.getContent()
+    public Page<LoanDTO> find(LoanFilterDTO dto, Pageable pageRequest) {
+        Page<Loan> result = service.find(dto, pageRequest);
+        List<LoanDTO> loans = result
+                .getContent()
                 .stream()
                 .map(entity -> {
+
                     Book book = entity.getBook();
-                    BookDTO bookDTO = mapper.map(book, BookDTO.class);
-                    LoanDTO loanDTO = mapper.map(entity, LoanDTO.class);
+                    BookDTO bookDTO = modelMapper.map(book, BookDTO.class);
+                    LoanDTO loanDTO = modelMapper.map(entity, LoanDTO.class);
                     loanDTO.setBookDTO(bookDTO);
                     return loanDTO;
+
                 }).collect(Collectors.toList());
-
-        return new PageImpl<LoanDTO>(listResponse,pageable, response.getTotalElements());
-
-
+        return new PageImpl<LoanDTO>(loans, pageRequest, result.getTotalElements());
     }
 }
