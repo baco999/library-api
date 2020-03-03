@@ -4,18 +4,18 @@ import com.apirestlibrary.libraryapi.api.dto.LoanFilterDTO;
 import com.apirestlibrary.libraryapi.api.exception.BusinessException;
 import com.apirestlibrary.libraryapi.model.entity.Book;
 import com.apirestlibrary.libraryapi.model.entity.Loan;
-import com.apirestlibrary.libraryapi.model.repository.BookRepository;
 import com.apirestlibrary.libraryapi.model.repository.LoanRepository;
-import com.apirestlibrary.libraryapi.service.impl.BookServiceImpl;
 import com.apirestlibrary.libraryapi.service.impl.LoanServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -32,14 +32,18 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 public class LoanServiceTest {
 
-    LoanService service;
+    @MockBean
+    private BookService bookService;
+
+    @MockBean
+    private LoanService loanService;
 
     @MockBean
     LoanRepository repository;
 
     @BeforeEach
     public void setUp(){
-        this.service = new LoanServiceImpl(repository);
+        this.loanService = new LoanServiceImpl(repository);
     }
 
     @Test
@@ -69,7 +73,7 @@ public class LoanServiceTest {
 
         when(repository.save(savingLoan)).thenReturn(savedLoan);
 
-        Loan loan = service.save(savingLoan);
+        Loan loan = loanService.save(savingLoan);
 
         assertThat(loan.getId()).isEqualTo(savedLoan.getId());
         assertThat(loan.getBook().getId()).isEqualTo(savedLoan.getBook().getId());
@@ -98,7 +102,7 @@ public class LoanServiceTest {
 
         when(repository.existsBookAndNotReturned(book)).thenReturn(true);
 
-        Throwable e = catchThrowable(() -> service.save(savingLoan));
+        Throwable e = catchThrowable(() -> loanService.save(savingLoan));
 
         assertThat(e).isInstanceOf(BusinessException.class).hasMessage("Livro ja emprestado");
 
@@ -117,7 +121,7 @@ public class LoanServiceTest {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(loan));
 
         //exe
-        Optional<Loan> loanById = service.getById(id);
+        Optional<Loan> loanById = loanService.getById(id);
 
         //verificação
         assertThat(loanById.isPresent()).isTrue();
@@ -141,7 +145,7 @@ public class LoanServiceTest {
 
         when(repository.save(loan)).thenReturn(loan);
 
-        Loan update = service.update(loan);
+        Loan update = loanService.update(loan);
 
         assertThat(update.getReturned()).isTrue();
         verify(repository, times(1)).save(loan);
@@ -165,7 +169,7 @@ public class LoanServiceTest {
                 Mockito.any(Pageable.class)))
                 .thenReturn(page);
 
-        Page<Loan> response = service.find(loanFilterDTO, pageRequest);
+        Page<Loan> response = loanService.find(loanFilterDTO, pageRequest);
 
         assertThat(response.getTotalElements()).isEqualTo(1);
         assertThat(response.getContent()).isEqualTo(list);

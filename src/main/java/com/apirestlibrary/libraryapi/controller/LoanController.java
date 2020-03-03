@@ -37,7 +37,7 @@ public class LoanController {
         Book book = bookService
                 .getBookByIsbn(dto.getIsbn())
                 .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book not found for passed isbn"));
+                        new ResponseStatusException(HttpStatus.BAD_REQUEST, "Livro não encontrado com esse isbn fornecido"));
         Loan entity = Loan.builder()
                 .book(book)
                 .customer(dto.getCustomer())
@@ -48,7 +48,7 @@ public class LoanController {
         return entity.getId();
     }
 
-    @PatchMapping("{id}")
+    @PutMapping("{id}")
     public void returnBook(
             @PathVariable Long id,
             @RequestBody ReturnedLoanDTO dto) {
