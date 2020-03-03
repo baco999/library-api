@@ -98,7 +98,7 @@ public class BookController {
             @ApiResponse(code = 500, message = "Serviço indisponivel"),
             @ApiResponse(code = 404, message = "Não foi encontrado")
     })
-    public BookDTO updateBook(@PathVariable @Valid Long id ,BookDTO bookDTO){
+    public BookDTO updateBook(@PathVariable  Long id, @Valid @RequestBody BookDTO bookDTO){
         log.info("Objetos de entrada para atualização do livro: {}, {}",id,bookDTO);
         return bookService.getById(id).map( book -> {
                 book.setAuthor(bookDTO.getAuthor() );
