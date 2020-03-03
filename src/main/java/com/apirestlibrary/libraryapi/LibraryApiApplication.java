@@ -1,5 +1,6 @@
 package com.apirestlibrary.libraryapi;
 
+import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableAdminServer
 public class LibraryApiApplication extends SpringBootServletInitializer {
 /*
 	@Autowired
