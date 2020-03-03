@@ -3,19 +3,19 @@ Criação de uma API RestFull que busca , cria , atualiza e deleta livros na bas
 
 Ferramentas usadas:
 
-Spring-Boot-Web
-Spring-Boot-JPA
-Spring-Boot-Mail
-Spring-Boot-Actuator
-Spring-Boot-Admin
-Spring-Boot-DevTools
-H2 Databa Base
-Lombok
-ModelMapper
-Swagger
-Junit5
-Mockito
-Jacoco
+# Spring-Boot-Web
+# Spring-Boot-JPA
+# Spring-Boot-Mail
+# Spring-Boot-Actuator
+# Spring-Boot-Admin
+# Spring-Boot-DevTools
+# H2 Databa Base
+# Lombok
+# ModelMapper
+# Swagger
+# Junit5
+# Mockito
+# Jacoco
 
 
 [![Build Status](https://travis-ci.org/baco999/library-api.svg?branch=master)](https://travis-ci.org/baco999/library-api)
