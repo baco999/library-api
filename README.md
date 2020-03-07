@@ -18,6 +18,6 @@ Ferramentas usadas:
 # Jacoco
 
 
-[![Build Status](https://travis-ci.org/baco999/library-api.svg?branch=master)](https://travis-ci.org/baco999/library-api)
+[![Build Status](https://travis-ci.org/bacoexudoblues/library-api.svg?branch=master)](https://travis-ci.org/baco999/library-api)
 
 [![codecov](https://codecov.io/gh/baco999/library-api/branch/master/graph/badge.svg)](https://codecov.io/gh/baco999/library-api)
